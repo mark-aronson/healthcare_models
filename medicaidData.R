@@ -1,6 +1,6 @@
 library(httr)
 
-
+# fetch data from CMS website 
 response <- GET("https://data.cms.gov/data-api/v1/dataset/be64fce3-e835-4589-b46b-024198e524a6/data")
 rawData <- content(response,as="parsed")
 
@@ -15,5 +15,8 @@ for (i in 1:length(rawData)) {
   data[i,] <- data.frame(rawData[i])
 }
 
-# view data
-head(data)
+
+# get all rows with overall 
+overallData <- subset(data,Mftr_Name=='Overall')
+
+head(overallData)
