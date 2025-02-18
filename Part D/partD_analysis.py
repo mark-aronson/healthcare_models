@@ -17,23 +17,26 @@ shapefile = fun.merge_shapefile_data(shapefile_path_counties_2022,opioid_data,'G
 fun.plot_choropleth_map(shapefile,'Opioid_Prscrbng_Rate')
 
 
-#%% get census data
-
-housingData = requests.get('https://api.census.gov/data/2022/acs/acs5?get=group(B25087)&ucgid=pseudo(0100000US$0500000)')
-
-data = pd.DataFrame(housingData.json())
-#%%
-
-housingData = requests.get('https://api.census.gov/data/2023/acs/acs5?get=group(B10052)&ucgid=pseudo(0100000US$0500000)')
-
-data = pd.DataFrame(housingData.json())
-
-#%%
+#%% Get DP05 datatable from the Census website 
 
 url_dp05 = 'https://api.census.gov/data/2022/acs/acs5/profile?get=group(DP05)&ucgid=pseudo(0100000US$0500000)'
 
 acs_demographic_housing_data = fun.get_api_dataframe(url_dp05)
 acs_demographic_housing_data['GEOID'] = acs_demographic_housing_data['GEO_ID'].str[-5:]
+
+#%% Extract demographic groups 
+
+# codebook: https://api.census.gov/data/2018/acs/acs5/profile/groups/DP05.html
+
+variables = ['DP05_0005PE','DP05_0006PE','DP05_0007PE','DP05_0008PE',
+             'DP05_0009PE','DP05_0010PE','DP05_0011PE','DP05_0012PE',
+             'DP05_0013PE','DP05_0014PE','DP05_0015PE','DP05_0016PE',
+             'DP05_0017PE']
+labels = ['under 5','5-9','10-14','15-19','20-24','25-34','35-44','45-54',
+          '55-59','60-64','65-74','75-84','85+']
+
+age_data = acs_demographic_housing_data[variables]
+age_data.columns = labels
 
 #%% start building dataset 
 
