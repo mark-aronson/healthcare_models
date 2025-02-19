@@ -79,6 +79,64 @@ def extract_race_data(data):
     extracted_data.iloc[:, 1:] = extracted_data.iloc[:, 1:].astype(float)
     
     return extracted_data
+
+def extract_sex_data(data):
+
+    variables = ['GEOID','DP05_0002PE','DP05_0003PE']
+    
+    labels = ['GEOID','Male','Female']
+    
+    extracted_data = data[variables].copy()
+    extracted_data.columns = labels
+    
+    extracted_data.iloc[:, 1:] = extracted_data.iloc[:, 1:].astype(float)
+    
+    return extracted_data
+
+def extract_housing_data(data):
+    
+    variables = ['GEOID','DP02_0002PE','DP02_0003PE','DP02_0004PE',
+                 'DP02_0005PE','DP02_0006PE','DP02_0007PE','DP02_0008PE',
+                 'DP02_0009PE','DP02_0010PE','DP02_0011PE','DP02_0012PE',
+                 'DP02_0013PE']
+    
+    labels = ['GEOID','Married_total','Married_kids','Cohabit_total',
+              'Cohabit_kids','Male_total','Male_kids','Male_alone_total',
+              'Male_alone_over65','Female_total','Female_kids',
+              'Female_alone_total','Female_alone_over65']
+    
+    extracted_data = data[variables].copy()
+    extracted_data.columns = labels 
+    
+    extracted_data.iloc[:, 1:] = extracted_data.iloc[:, 1:].astype(float)
+    
+    # derived quantities 
+    extracted_data['Married_no_kids'] = extracted_data['Married_total'] - extracted_data['Married_kids']
+    extracted_data['Cohabit_no_kids'] = extracted_data['Cohabit_total'] - extracted_data['Cohabit_kids']
+    extracted_data['Male_alone_under65'] = extracted_data['Male_alone_total'] - extracted_data['Male_alone_over65']
+    extracted_data['Male_adults'] = extracted_data['Male_total'] - extracted_data['Male_kids'] - extracted_data['Male_alone_total']
+    extracted_data['Female_alone_under65'] = extracted_data['Female_alone_total'] - extracted_data['Female_alone_over65']
+    extracted_data['Female_adults'] = extracted_data['Female_total'] - extracted_data['Female_kids'] - extracted_data['Female_alone_total']
+    
+    return extracted_data
+    
+def extract_marriage_data(data):
+    
+    variables = ['GEOID','DP02_0026PE','DP02_0027PE','DP02_0028PE',
+                 'DP02_0029PE','DP02_0030PE','DP02_0032PE','DP02_0033PE',
+                 'DP02_0034PE','DP02_0035PE','DP02_0036PE']
+    
+    labels = ['GEOID','male_never_married','male_married','male_separated',
+              'male_widowed','male_divorced','female_never_married',
+              'female_married','female_separated','female_widowed',
+              'female_divorced']
+    
+    extracted_data = data[variables].copy()
+    extracted_data.columns = labels 
+    
+    extracted_data.iloc[:, 1:] = extracted_data.iloc[:, 1:].astype(float)
+    
+    return extracted_data
     
 
 def plot_choropleth_map(shapefile,data_column,cmap='Blues'):
