@@ -48,6 +48,23 @@ dp02['GEOID'] = dp02['GEO_ID'].str[-5:]
 
 housing_data = fun.extract_housing_data(dp02)
 marriage_data = fun.extract_marriage_data(dp02)
+school_enrollment_data = fun.extract_school_enrollment_data(dp02)
+education_data = fun.extract_education_data(dp02)
+
+#%% Get DP03 Datatable 
+
+url_dp03 = 'https://api.census.gov/data/2022/acs/acs5/profile?get=group(DP03)&ucgid=pseudo(0100000US$0500000)'
+
+dp03 = fun.get_api_dataframe(url_dp03)
+dp03['GEOID'] = dp03['GEO_ID'].str[-5:]
+
+#%% Extract Economic Characteristics 
+
+# codebook: https://api.census.gov/data/2022/acs/acs5/profile/groups/DP03.html
+# variable view: https://data.census.gov/table/ACSSDP1YCD1192023.DP03?q=DP03:+Selected+Economic+Characteristics
+
+household_income_data = fun.extract_household_income_data(dp03)
+
 
 #%% start building dataset 
 
@@ -58,5 +75,8 @@ data = pd.merge(data,race_data,on='GEOID',how='left')
 data = pd.merge(data,sex_data,on='GEOID',how='left')
 data = pd.merge(data,housing_data,on='GEOID',how='left')
 data = pd.merge(data,marriage_data,on='GEOID',how='left')
+data = pd.merge(data,school_enrollment_data,on='GEOID',how='left')
+data = pd.merge(data,education_data,on='GEOID',how='left')
+data = pd.merge(data,household_income_data,on='GEOID',how='left')
 
 

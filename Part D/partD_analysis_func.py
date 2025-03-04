@@ -137,7 +137,53 @@ def extract_marriage_data(data):
     extracted_data.iloc[:, 1:] = extracted_data.iloc[:, 1:].astype(float)
     
     return extracted_data
+
+def extract_school_enrollment_data(data):
     
+    variables = ['GEOID','DP02_0054PE','DP02_0055PE','DP02_0056PE',
+                 'DP02_0057PE','DP02_0058PE']
+    
+    labels = ['GEOID','preschool','kindergarten','elementary_school',
+              'high_school','college']
+    
+    extracted_data = data[variables].copy()
+    extracted_data.columns = labels 
+    
+    extracted_data.iloc[:, 1:] = extracted_data.iloc[:, 1:].astype(float)
+    
+    return extracted_data
+
+def extract_education_data(data):
+    
+    variables = ['GEOID','DP02_0060PE','DP02_0061PE','DP02_0062PE',
+                 'DP02_0063PE','DP02_0064PE','DP02_0065PE','DP02_0066PE']
+                 
+    labels = ['GEOID','less_than_ninth','ninth_to_twelfth','hs_graduate',
+              'some_college','associates','bachelors','graduate_degree']
+    
+    extracted_data = data[variables].copy()
+    extracted_data.columns = labels 
+    
+    extracted_data.iloc[:, 1:] = extracted_data.iloc[:, 1:].astype(float)
+    
+    return extracted_data
+
+def extract_household_income_data(data):
+    
+    variables = ['GEOID','DP03_0052PE','DP03_0053PE','DP03_0054PE',
+                 'DP03_0055PE','DP03_0056PE','DP03_0057PE','DP03_0058PE',
+                 'DP03_0059PE','DP03_0060PE','DP03_0061PE']
+                 
+    labels = ['GEOID','less_10k','10k_to_15k','15k_to_25k','25k_to35k',
+              '35k_to_50k','50k_to_75k','75k_to_100k','100k_to_150k',
+              '150k_to_200k','200k_more']
+    
+    extracted_data = data[variables].copy()
+    extracted_data.columns = labels 
+    
+    extracted_data.iloc[:, 1:] = extracted_data.iloc[:, 1:].astype(float)
+    
+    return extracted_data
 
 def plot_choropleth_map(shapefile,data_column,cmap='Blues'):
     
